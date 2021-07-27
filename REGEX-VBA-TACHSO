@@ -1,0 +1,267 @@
+Function TachSoDienThoai(str As String)
+    
+    Dim regexOne As Object
+    Set regexOne = New RegExp
+     
+    With regexOne
+        .Pattern = "[0-9]{10}"
+        .Global = False
+        .IgnoreCase = False
+    End With
+    
+    Dim theMatches
+    Set theMatches = regexOne.Execute(str)
+     
+    TachSoDienThoai = theMatches.Item(0)
+End Function
+Function TachSoDonHang(str As String)
+    
+    Dim regexOne As Object
+    Set regexOne = New RegExp
+     
+    With regexOne
+        .Pattern = "DH+[0-9]{7}"
+        .Global = False
+        .IgnoreCase = False
+    End With
+    
+    Dim theMatches
+    Set theMatches = regexOne.Execute(str)
+     
+    TachSoDonHang = theMatches.Item(0)
+End Function
+Function TachSoHoaDon(str As String)
+    
+    Dim regexOne As Object
+    Set regexOne = New RegExp
+     
+    With regexOne
+        .Pattern = "[0-9]{7}?."
+        .Global = False
+        .IgnoreCase = False
+    End With
+    
+    Dim theMatches
+    Set theMatches = regexOne.Execute(str)
+     
+    TachSoHoaDon = theMatches.Item(0)
+End Function
+
+Function TachSoHoaDon2(str As String)
+    Dim regexOne As Object
+    Set regexOne = New RegExp
+    
+    Dim s1
+    s1 = UniConvert("HDD", "Telex")
+    
+    With regexOne
+        .Pattern = s1 & " " & "[0-9]{2,7}"
+        .Global = False
+        .IgnoreCase = False
+    End With
+    
+    Dim theMatches, Match
+    Set theMatches = regexOne.Execute(str)
+    
+    Match = Replace(theMatches.Item(0), s1 & " ", "")
+    
+    Dim leng As Byte
+    leng = Len(Match)
+    
+    If leng = 2 Then
+        TachSoHoaDon2 = "00000" + Match
+    ElseIf leng = 3 Then
+        TachSoHoaDon2 = "0000" + Match
+    ElseIf leng = 4 Then
+        TachSoHoaDon2 = "000" + Match
+    ElseIf leng = 5 Then
+        TachSoHoaDon2 = "00" + Match
+    End If
+    
+End Function
+
+Function TachSoPhieuXuatKho(str As String)
+    
+    Dim regexOne As Object
+    Set regexOne = New RegExp
+     
+    With regexOne
+        .Pattern = "XK+[0-9]{7}"
+        .Global = False
+        .IgnoreCase = False
+    End With
+    
+    Dim theMatches
+    Set theMatches = regexOne.Execute(str)
+     
+    TachSoHoaDon = theMatches.Item(0)
+End Function
+
+Function TachSoCTBH(str As String)
+    'Tim so chung tu dau tien
+    Dim regexOne As Object
+    Set regexOne = New RegExp
+     
+    With regexOne
+        .Pattern = "BH+[0-9]{5}"
+        .Global = False
+        .IgnoreCase = False
+    End With
+    
+    Dim theMatches
+    Set theMatches = regexOne.Execute(str)
+     
+    TachSoHoaDon = theMatches.Item(0)
+End Function
+
+Function TachEmail(str As String)
+    'Tim Email dau tien
+    'Dim MyString As String
+    Dim RegObj As RegExp
+    Set RegObj = New RegExp
+    
+    With RegObj
+      .Pattern = "[A-Za-z0-9._%+-]+@([A-Za-z0-9+-]+\.)+[A-Za-z]{2,4}"
+      .Global = False
+    End With
+
+    'MyString = "Tr?n tr?nh qu?c vi?t, email trantrinhquocviet0811@gmail.com"
+    
+    Dim matches, Match
+    Set matches = RegObj.Execute(str)
+    
+    If matches.Count > 0 Then
+        TachEmail = matches.Item(0)
+    Else
+        Debug.Print "Miss"
+    End If
+End Function
+Function TachEmailB(str As String)
+    'Tim Email dau tien
+    'Dim MyString As String
+    Dim RegObj As RegExp
+    Set RegObj = New RegExp
+    
+    With RegObj
+      .Pattern = "[A-Za-z0-9._%+-]+@([A-Za-z0-9+-]+\.)+[A-Za-z]{2,4}"
+      .Global = True
+    End With
+
+    'MyString = "Tr?n tr?nh qu?c vi?t, email trantrinhquocviet0811@gmail.com"
+    
+    Dim matches, Match
+    Set matches = RegObj.Execute(str)
+    Dim s1 As String
+    s1 = ""
+    For Each Match In matches
+        If Match = matches.Item(matches.Count - 1) Then
+            s1 = s1 + Match.Value
+        Else
+            s1 = s1 + Match.Value + ", "
+        End If
+    Next
+    
+    TachEmailB = s1
+End Function
+
+Function TachNgayC(str As String)
+    'Tim Email dau tien
+    'Dim str As String
+    Dim RegObj As RegExp
+    Set RegObj = New RegExp
+    
+    With RegObj
+      .Pattern = "([0-9]{1,2})+([\/-]{1})+([0-9]{1,2})"
+      .Global = True
+    End With
+
+    'str = "H?t nh?a PP 7032KN (1.000*28.700) - GH - 4/9 TT"
+    
+    Dim matches, Match
+    Set matches = RegObj.Execute(str)
+    
+    Debug.Print CStr(matches.Item(0))
+    
+End Function
+
+Function TachNgay(str As String)
+    'Tim Email dau tien
+    'Dim MyString As String
+    Dim RegObj As RegExp
+    Set RegObj = New RegExp
+    
+    With RegObj
+      .Pattern = "([0-9]{1,2})+[\./-]+([0-9]{1,2})+[\./-]+[0-9]{2,4}"
+      .Global = False
+    End With
+
+    'MyString = "26/07/2021 TRAN TRINH QUOC VIET DH25651 26.07.2022 07-11-1997 HOAC 08.11.97"
+    
+    Dim matches, Match
+    Set matches = RegObj.Execute(str)
+    
+    TachNgay = matches.Item(0)
+    
+End Function
+
+Function TachNgayB(str As String)
+    'Tim Email dau tien
+    'Dim MyString As String
+    Dim RegObj As RegExp
+    Set RegObj = New RegExp
+    
+    With RegObj
+      .Pattern = "([0-9]{1,2})+[\./-]+([0-9]{1,2})+[\./-]+[0-9]{2,4}"
+      .Global = True
+      .MultiLine = True
+    End With
+
+    'MyString = "26/07/2021 TRAN TRINH QUOC VIET DH25651 26.07.2022 07-11-1997 HOAC 08.11.97"
+    
+    Dim matches, Match
+    Set matches = RegObj.Execute(str)
+    Dim s1 As String
+    s1 = ""
+    For Each Match In matches
+        If Match = matches.Item(matches.Count - 1) Then
+            s1 = s1 + Match.Value
+        Else
+            s1 = s1 + Match.Value + ", "
+        End If
+    Next
+    
+    TachNgayB = s1
+    
+End Function
+
+Function TachCN(str As String)
+
+    'Dim str As String
+
+    Dim regexObj1 As RegExp
+    Set regexObj1 = New RegExp
+    
+    With regexObj1
+        .Pattern = "(CN|cN|cn|Cn)+([^a-zA-Z0-9\./)(-]{0,1})+[0-9]{1,2}"
+        .Global = True
+        .IgnoreCase = False
+    End With
+    
+    'str = "KG: H?t nh?a PP-CN L5E89 (10.000 X 33.800) - CN20 - GH"
+    
+    Dim Match, matches
+    Set matches = regexObj1.Execute(str)
+    Dim s1 As String
+    s1 = ""
+    
+    For Each Match In matches
+        If matches.Item(matches.Count - 1) = Match.Value Then
+            s1 = s1 + Match.Value
+        Else
+            s1 = s1 + Match.Value + ","
+        End If
+    Next
+    
+    TachCN = s1
+    
+End Function
